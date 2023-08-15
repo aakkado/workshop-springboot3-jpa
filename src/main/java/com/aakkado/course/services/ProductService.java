@@ -12,7 +12,7 @@ import java.util.Optional;
 public class ProductService {
 
     @Autowired
-    ProductRepository repository;
+    private ProductRepository repository;
 
     public List<Product> findAll(){
         return repository.findAll();

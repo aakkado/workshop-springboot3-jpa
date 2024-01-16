@@ -2,6 +2,7 @@ package com.aakkado.course.entities;
 
 import com.aakkado.course.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -26,6 +27,9 @@ public class Order implements Serializable {
     private Instant moment;
 
     private Integer orderStatus;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -78,6 +82,24 @@ public class Order implements Serializable {
 
     public Set<OrderItem> getItems() {
         return items;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public Double getTotal(){
+        double sum = 0.0;
+
+        for (OrderItem x : items){
+            sum += x.getSubTotal();
+        }
+
+        return sum;
     }
 
     @Override
